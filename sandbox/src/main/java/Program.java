@@ -1,9 +1,12 @@
 public class Program
 {
     public static void main(String[] args) {
-        var p1 = new Point();
-        var p2 = new Point(1,2);
+        Point p1 = new Point(0,0);
+        Point p2 = new Point(1,2);
 
-        var r = Point.distance(p1, p2);
+        Double r = p1.distance(p2);
+
+        System.out.println(
+                "The distance between points (" + p1.x + "," + p1.y + ") and (" + p2.x + "," +p2.y + ") is " + r );
     }
 }
