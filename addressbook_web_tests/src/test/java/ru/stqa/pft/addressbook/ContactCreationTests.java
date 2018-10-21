@@ -18,7 +18,7 @@ public class ContactCreationTests {
     }
 
     @Test
-    public void testContactCreationTests() throws Exception {
+    public void testContactCreation() throws Exception {
         login("admin", "secret");
         gotoContactCreation();
         fillContactForm(new ContactData("firstName", "middleName", "lastName", "nickName", "title", "company", "address", "123456789", "123456789", "123456789", "123456789", "qwe@qwe.su"));
