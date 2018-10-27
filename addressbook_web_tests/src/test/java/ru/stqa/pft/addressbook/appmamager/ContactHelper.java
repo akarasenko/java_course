@@ -12,6 +12,10 @@ public class ContactHelper extends HelperBase {
         super(wd);
     }
 
+    public void initContactCreation(){
+        click(By.linkText("add new"));
+    }
+
     public void fillContactForm(boolean creation, ContactData contactData) {
         type(By.name("firstname"), contactData.getFirstName());
         type(By.name("middlename"), contactData.getMiddleName());
@@ -19,7 +23,6 @@ public class ContactHelper extends HelperBase {
         type(By.name("mobile"), contactData.getMobilePhone());
         type(By.name("work"), contactData.getWorkPhone());
         type(By.name("email"), contactData.getEmail());
-
         if (creation) {
             new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
         } else {
@@ -49,5 +52,21 @@ public class ContactHelper extends HelperBase {
 
     public void submitContactDeletion() {
         wd.switchTo().alert().accept();
+    }
+
+    public void addContact(ContactData contact) {
+        initContactCreation();
+        fillContactForm(true, contact);
+        submitContactCreation();
+        retunToHomePage();
+    }
+
+    public void retunToHomePage() {
+        click(By.linkText("home"));
+    }
+
+    public boolean isThereAContact()
+    {
+        return isElementPresent(By.name("selected[]"));
     }
 }
