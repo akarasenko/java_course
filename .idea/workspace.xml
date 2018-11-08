@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe87d7f6-39f3-4df6-b256-2270ba185200" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/addressbook_web_tests/src/test/java/ru/stqa/pft/addressbook/model/GroupData.java" beforeDir="false" afterPath="$PROJECT_DIR$/addressbook_web_tests/src/test/java/ru/stqa/pft/addressbook/model/GroupData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addressbook_web_tests/src/test/java/ru/stqa/pft/addressbook/tests/GroupCreationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/addressbook_web_tests/src/test/java/ru/stqa/pft/addressbook/tests/GroupCreationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addressbook_web_tests/src/test/java/ru/stqa/pft/addressbook/tests/GroupModificationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/addressbook_web_tests/src/test/java/ru/stqa/pft/addressbook/tests/GroupModificationTest.java" afterDir="false" />
-    </list>
+    <list default="true" id="fe87d7f6-39f3-4df6-b256-2270ba185200" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/sandbox/.gradle/" />
     <ignored path="$PROJECT_DIR$/sandbox/build/" />
     <ignored path="$PROJECT_DIR$/sandbox/out/" />
@@ -1118,7 +1114,7 @@
       <workItem from="1540620353011" duration="3770000" />
       <workItem from="1540625579489" duration="12368000" />
       <workItem from="1541600938461" duration="5999000" />
-      <workItem from="1541683807821" duration="5360000" />
+      <workItem from="1541683807821" duration="5638000" />
     </task>
     <servers />
   </component>
@@ -1155,7 +1151,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="69939000" />
+    <option name="totallyTimeSpent" value="70217000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
