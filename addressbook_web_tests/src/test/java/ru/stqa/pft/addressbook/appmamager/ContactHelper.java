@@ -2,9 +2,13 @@ package ru.stqa.pft.addressbook.appmamager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactHelper extends HelperBase {
 
@@ -42,8 +46,8 @@ public class ContactHelper extends HelperBase {
         click(By.xpath("(//input[@name='update'])[2]"));
     }
 
-    public void selectContact() {
-        click((By.name("selected[]")));
+    public void selectContact(int i) {
+        wd.findElements(By.name("selected[]")).get(i).click();
     }
 
     public void deleteContact() {
@@ -68,5 +72,23 @@ public class ContactHelper extends HelperBase {
     public boolean isThereAContact()
     {
         return isElementPresent(By.name("selected[]"));
+    }
+
+    public List<ContactData> getContactList() {
+        List<ContactData> contacts = new ArrayList<ContactData>();
+
+        List<WebElement> elements = wd.findElements(By.cssSelector("tr"));
+
+        for (int i = 0; i < elements.size(); i++) {
+            if (i!=0)
+            {
+                var tableRow = elements.get(i).findElements(By.cssSelector("td"));
+                int id = Integer.parseInt(tableRow.get(0).findElement(By.tagName("input")).getAttribute("value"));
+                String name = tableRow.get(1).getText();
+                ContactData contact = new ContactData(id, name, null, null, null, null, null, null);
+                contacts.add(contact);
+            }
+        }
+        return  contacts;
     }
 }
