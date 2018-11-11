@@ -38,8 +38,13 @@ public class ContactHelper extends HelperBase {
         click(By.name("submit"));
     }
 
-    public void initContactModification() {
-        click(By.cssSelector("img[alt=\"Edit\"]"));
+    public void initContactModification(int i) {
+       // wd.findElements("img[alt=\"Edit\"]"));
+        wd.findElements(By.cssSelector("tr"))
+                .get(i)
+                .findElements(By.cssSelector("td"))
+                .get(7)
+                .click();
     }
 
     public void submitContactModification() {
@@ -82,7 +87,7 @@ public class ContactHelper extends HelperBase {
         for (int i = 0; i < elements.size(); i++) {
             if (i!=0)
             {
-                var tableRow = elements.get(i).findElements(By.cssSelector("td"));
+                List<WebElement> tableRow = elements.get(i).findElements(By.cssSelector("td"));
                 int id = Integer.parseInt(tableRow.get(0).findElement(By.tagName("input")).getAttribute("value"));
                 String name = tableRow.get(1).getText();
                 ContactData contact = new ContactData(id, name, null, null, null, null, null, null);
