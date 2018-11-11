@@ -12,6 +12,8 @@ import java.util.List;
 
 public class ContactHelper extends HelperBase {
 
+    // контакт определяется id и firstname
+
     public ContactHelper(WebDriver wd) {
         super(wd);
     }
@@ -22,11 +24,7 @@ public class ContactHelper extends HelperBase {
 
     public void fillContactForm(boolean creation, ContactData contactData) {
         type(By.name("firstname"), contactData.getFirstName());
-        type(By.name("middlename"), contactData.getMiddleName());
-        type(By.name("lastname"), contactData.getLastName());
         type(By.name("mobile"), contactData.getMobilePhone());
-        type(By.name("work"), contactData.getWorkPhone());
-        type(By.name("email"), contactData.getEmail());
         if (creation) {
              new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
         } else {
@@ -41,7 +39,7 @@ public class ContactHelper extends HelperBase {
     public void initContactModification(int i) {
        // wd.findElements("img[alt=\"Edit\"]"));
         wd.findElements(By.cssSelector("tr"))
-                .get(i)
+                .get(i + 1)
                 .findElements(By.cssSelector("td"))
                 .get(7)
                 .click();
@@ -89,8 +87,8 @@ public class ContactHelper extends HelperBase {
             {
                 List<WebElement> tableRow = elements.get(i).findElements(By.cssSelector("td"));
                 int id = Integer.parseInt(tableRow.get(0).findElement(By.tagName("input")).getAttribute("value"));
-                String name = tableRow.get(1).getText();
-                ContactData contact = new ContactData(id, name, null, null, null, null, null, null);
+                String name = tableRow.get(2).getText();
+                ContactData contact = new ContactData(id, name,null, null);
                 contacts.add(contact);
             }
         }

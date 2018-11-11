@@ -15,11 +15,7 @@ public class ContactDeletionTests extends TestBase {
         if (!app.getContactHelper().isThereAContact()) {
             app.getContactHelper().addContact(new ContactData(
                     "firstName",
-                    "middleName",
-                    "lastName",
                     "123456789",
-                    "123456789",
-                    "qwe@qwe.su",
                     "testgroup"));
         }
 
