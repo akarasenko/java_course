@@ -11,6 +11,8 @@ public class ContactCreationTests extends TestBase {
 
     @Test
     public void testContactCreation() {
+        app.getNavigationHelper().goToHomePage();
+
         ContactData dataToAdd = new ContactData(
                 "firstName",
                 "123456789",
