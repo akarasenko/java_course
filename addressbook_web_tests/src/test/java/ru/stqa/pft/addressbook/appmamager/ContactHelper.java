@@ -68,6 +68,7 @@ public class ContactHelper extends HelperBase {
         retunToHomePage();
     }
 
+
     public void retunToHomePage() {
         click(By.linkText("home"));
     }
