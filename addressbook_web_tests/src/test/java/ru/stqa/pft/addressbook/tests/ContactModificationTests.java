@@ -12,10 +12,10 @@ public class ContactModificationTests extends TestBase {
 
     @BeforeTest
     public void unsurePreconditions() {
-        app.getNavigationHelper().goToHomePage();
+        app.goTo().HomePage();
 
-        if (!app.getContactHelper().isThereAContact()) {
-            app.getContactHelper().addContact(new ContactData(
+        if (!app.contact().isThereAContact()) {
+            app.contact().add(new ContactData(
                     "firstName",
                     "123456789",
                     "testgroup"));
@@ -24,7 +24,7 @@ public class ContactModificationTests extends TestBase {
 
     @Test
     public void testContactModification() {
-        List<ContactData> before = app.getContactHelper().getContactList();
+        List<ContactData> before = app.contact().list();
 
         int indexToModify = before.size() - 1;
 
@@ -34,14 +34,13 @@ public class ContactModificationTests extends TestBase {
                 null,
                 null);
 
-        app.getContactHelper().initContactModification(indexToModify);
-        app.getContactHelper().fillContactForm(false, modifiedData);
-        app.getContactHelper().submitContactModification();
+        app.contact().modify(indexToModify, modifiedData);
+        app.goTo().HomePage();
 
-        app.getNavigationHelper().goToHomePage();
-
-        List<ContactData> after = app.getContactHelper().getContactList();
+        List<ContactData> after = app.contact().list();
 
         Assert.assertEquals(new HashSet<ContactData>(before), new HashSet<ContactData>(after));
     }
+
+
 }
