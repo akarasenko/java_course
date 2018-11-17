@@ -15,10 +15,10 @@ public class ContactModificationTests extends TestBase {
         app.goTo().HomePage();
 
         if (!app.contact().isThereAContact()) {
-            app.contact().add(new ContactData(
-                    "firstName",
-                    "123456789",
-                    "testgroup"));
+            app.contact().add(new ContactData()
+                    .withFirstName("firstName")
+                    .withMobilePhone("123456789")
+                    .withGroup("testgroup"));
         }
     }
 
@@ -28,11 +28,9 @@ public class ContactModificationTests extends TestBase {
 
         int indexToModify = before.size() - 1;
 
-        ContactData modifiedData = new ContactData(
-                before.get(indexToModify).getId(),
-                "newFirstName",
-                null,
-                null);
+        ContactData modifiedData = new ContactData()
+                .withId(before.get(indexToModify).getId())
+                .withFirstName("newFirstName");
 
         app.contact().modify(indexToModify, modifiedData);
         app.goTo().HomePage();

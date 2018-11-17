@@ -14,10 +14,10 @@ public class ContactDeletionTests extends TestBase {
         app.goTo().HomePage();
 
         if (!app.contact().isThereAContact()) {
-            app.contact().add(new ContactData(
-                    "firstName",
-                    "123456789",
-                    "testgroup"));
+            app.contact().add(new ContactData()
+                    .withFirstName("firstName")
+                    .withMobilePhone("123456789")
+                    .withGroup("testgroup"));
         }
     }
 
