@@ -81,6 +81,10 @@ public class ContactHelper extends HelperBase {
         contactCache = null;
     }
 
+    public int size(){
+        return wd.findElements(By.name("selected[]")).size();
+    }
+
     public List<ContactData> list() {
         List<ContactData> contacts = new ArrayList<ContactData>();
 

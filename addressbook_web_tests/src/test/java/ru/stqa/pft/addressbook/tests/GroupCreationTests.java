@@ -20,9 +20,11 @@ public class GroupCreationTests extends TestBase {
                 .withFooter("testfooter");
 
         app.group().add(addedData);
+
+        assertThat(app.group().size(), equalTo(before.size() + 1));
+
         Groups after = app.group().all();
 
-        assertThat(after.size(), equalTo(before.size() + 1));
         assertThat(after, equalTo(
                 after.withAdded(addedData.withId(after.stream().mapToInt(o -> o.getId()).max().getAsInt()))));
     }

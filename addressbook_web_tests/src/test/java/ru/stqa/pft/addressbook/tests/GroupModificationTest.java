@@ -34,9 +34,10 @@ public class GroupModificationTest extends TestBase {
 
         app.group().modify(groupToModify, modifiedData);
 
+        assertThat(app.group().size(), equalTo(before.size()));
+
         Groups after = app.group().all();
 
-        assertThat(after.size(), equalTo(before.size()));
         assertThat(after, equalTo(
                 after.without(groupToModify)
                         .withAdded(modifiedData.withId(after.stream().mapToInt(o -> o.getId()).max().getAsInt()))));
