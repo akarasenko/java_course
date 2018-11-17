@@ -8,14 +8,16 @@ import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends HelperBase {
     public ContactHelper(WebDriver wd) {
         super(wd);
     }
 
-    public void initContactCreation(){
+    public void initContactCreation() {
         click(By.linkText("add new"));
     }
 
@@ -23,7 +25,7 @@ public class ContactHelper extends HelperBase {
         type(By.name("firstname"), contactData.getFirstName());
         type(By.name("mobile"), contactData.getMobilePhone());
         if (creation) {
-             new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
@@ -33,13 +35,8 @@ public class ContactHelper extends HelperBase {
         click(By.name("submit"));
     }
 
-    public void initContactModification(int i) {
-       // wd.findElements("img[alt=\"Edit\"]"));
-        wd.findElements(By.cssSelector("tr"))
-                .get(i + 1)
-                .findElements(By.cssSelector("td"))
-                .get(7)
-                .click();
+    public void initContactModification(int id) {
+        wd.findElement(By.cssSelector("a[href='edit.php?id=" + id + "']")).click();
     }
 
     public void submitContactModification() {
@@ -58,13 +55,12 @@ public class ContactHelper extends HelperBase {
         click(By.linkText("home"));
     }
 
-    public boolean isThereAContact()
-    {
+    public boolean isThereAContact() {
         return isElementPresent(By.name("selected[]"));
     }
 
-    public void select(int i) {
-        wd.findElements(By.name("selected[]")).get(i).click();
+    public void selectById(int id) {
+        wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
     }
 
     public void add(ContactData contact) {
@@ -74,14 +70,14 @@ public class ContactHelper extends HelperBase {
         retunToHomePage();
     }
 
-    public void delete(int indexToDelete) {
-        select(indexToDelete);
+    public void delete(ContactData contact) {
+        selectById(contact.getId());
         deleteContact();
         submitContactDeletion();
     }
 
-    public void modify(int indexToModify, ContactData modifiedData) {
-        initContactModification(indexToModify);
+    public void modify(ContactData contact, ContactData modifiedData) {
+        initContactModification(contact.getId());
         fillContactForm(false, modifiedData);
         submitContactModification();
     }
@@ -92,8 +88,7 @@ public class ContactHelper extends HelperBase {
         List<WebElement> elements = wd.findElements(By.cssSelector("tr"));
 
         for (int i = 0; i < elements.size(); i++) {
-            if (i!=0)
-            {
+            if (i != 0) {
                 List<WebElement> tableRow = elements.get(i).findElements(By.cssSelector("td"));
                 int id = Integer.parseInt(tableRow.get(0).findElement(By.tagName("input")).getAttribute("value"));
                 String name = tableRow.get(2).getText();
@@ -101,6 +96,24 @@ public class ContactHelper extends HelperBase {
                 contacts.add(contact);
             }
         }
-        return  contacts;
+        return contacts;
     }
+
+    public Set<ContactData> all() {
+        HashSet<ContactData> contacts = new HashSet<ContactData>();
+
+        List<WebElement> elements = wd.findElements(By.cssSelector("tr"));
+
+        for (int i = 0; i < elements.size(); i++) {
+            if (i != 0) {
+                List<WebElement> tableRow = elements.get(i).findElements(By.cssSelector("td"));
+                int id = Integer.parseInt(tableRow.get(0).findElement(By.tagName("input")).getAttribute("value"));
+                String name = tableRow.get(2).getText();
+                ContactData contact = new ContactData().withId(id).withFirstName(name);
+                contacts.add(contact);
+            }
+        }
+        return contacts;
+    }
+
 }

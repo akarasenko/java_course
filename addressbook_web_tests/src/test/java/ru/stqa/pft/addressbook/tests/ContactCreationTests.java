@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 
 public class ContactCreationTests extends TestBase {
 
@@ -18,14 +18,14 @@ public class ContactCreationTests extends TestBase {
                 .withMobilePhone("123456789")
                 .withGroup("testgroup");
 
-        List<ContactData> before = app.contact().list();
+        Set<ContactData> before = app.contact().all();
 
         app.contact().add(dataToAdd);
         app.goTo().HomePage();
 
-        List<ContactData> after = app.contact().list();
+        Set<ContactData> after = app.contact().all();
 
-        dataToAdd.withId(after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId());
+        dataToAdd.withId(after.stream().mapToInt((o) -> o.getId()).max().getAsInt());
         before.add(dataToAdd);
 
         Assert.assertEquals(new HashSet<ContactData>(before), new HashSet<ContactData>(after));
