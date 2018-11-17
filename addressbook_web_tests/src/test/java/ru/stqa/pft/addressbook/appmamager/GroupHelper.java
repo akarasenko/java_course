@@ -6,7 +6,9 @@ import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GroupHelper extends HelperBase {
 
@@ -32,9 +34,14 @@ public class GroupHelper extends HelperBase {
         click(By.name("delete"));
     }
 
+    /*
     public void selectGroup(int index) {
+             wd.findElements(By.name("selected[]")).get(index).click();
+    }
+    */
 
-        wd.findElements(By.name("selected[]")).get(index).click();
+    private void selectGroupById(int id) {
+        wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
     }
 
     public void goToGroupPage() {
@@ -49,9 +56,11 @@ public class GroupHelper extends HelperBase {
         click(By.name("update"));
     }
 
+    /*
     public boolean isThereAGroup() {
         return isElementPresent(By.name("selected[]"));
     }
+    */
 
     public void add(GroupData group) {
         initGroupCreation();
@@ -60,8 +69,18 @@ public class GroupHelper extends HelperBase {
         goToGroupPage();
     }
 
+    /*
     public void modify(int indexToModify, GroupData modefiedData) {
         selectGroup(indexToModify);
+        ininGroupModification();
+        fillGroupForm(modefiedData);
+        subminGroupModification();
+        goToGroupPage();
+    }
+  */
+
+    public void modify(GroupData group, GroupData modefiedData) {
+        selectGroupById(group.getId());
         ininGroupModification();
         fillGroupForm(modefiedData);
         subminGroupModification();
@@ -86,8 +105,30 @@ public class GroupHelper extends HelperBase {
         return groups;
     }
 
+    public Set<GroupData> all() {
+        Set<GroupData> groups = new HashSet<>();
+        List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
+        for (WebElement element : elements) {
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
+            String name = element.getText();
+            GroupData group = new GroupData()
+                    .withId(id)
+                    .withName(name);
+            groups.add(group);
+        }
+        return groups;
+    }
+
+    /*
     public void delete(int indexToDelete) {
         selectGroup(indexToDelete);
+        deleteSelectedGroups();
+        goToGroupPage();
+    }
+    */
+
+    public void delete(GroupData groupToDelete) {
+        selectGroupById(groupToDelete.getId());
         deleteSelectedGroups();
         goToGroupPage();
     }

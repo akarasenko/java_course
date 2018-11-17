@@ -5,7 +5,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 
-import java.util.List;
+import java.util.Set;
 
 public class GroupDeletionTests extends TestBase {
     @BeforeTest
@@ -21,13 +21,13 @@ public class GroupDeletionTests extends TestBase {
 
     @Test
     public void testGroupDeletion() throws Exception {
-        List<GroupData> before = app.group().list();
-        int indexToDelete = 0;
-        app.group().delete(indexToDelete);
+        Set<GroupData> before = app.group().all();
+        GroupData groupToDelete = before.iterator().next();
+        app.group().delete(groupToDelete);
 
-        List<GroupData> after = app.group().list();
+        Set<GroupData> after = app.group().all();
 
-        before.remove(0);
+        before.remove(groupToDelete);
 
         Assert.assertEquals(before, after);
     }
