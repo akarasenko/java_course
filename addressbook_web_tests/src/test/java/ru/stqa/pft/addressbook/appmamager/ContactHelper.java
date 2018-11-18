@@ -118,11 +118,36 @@ public class ContactHelper extends HelperBase {
                 List<WebElement> tableRow = elements.get(i).findElements(By.cssSelector("td"));
                 int id = Integer.parseInt(tableRow.get(0).findElement(By.tagName("input")).getAttribute("value"));
                 String name = tableRow.get(2).getText();
-                ContactData contact = new ContactData().withId(id).withFirstName(name);
+                String eMails = tableRow.get(4).getText();
+                String phones = tableRow.get(5).getText();
+                ContactData contact = new ContactData()
+                        .withId(id)
+                        .withFirstName(name)
+                        .withAllEMails(eMails)
+                        .withAllPhones(phones);
                 contactCache.add(contact);
             }
         }
         return new Contacts(contactCache);
     }
 
+    public ContactData phonesFromEditForm(int id) {
+        initContactModification(id);
+        ContactData contact = new ContactData()
+                .withHomePhone(wd.findElement(By.name("home")).getAttribute("value"))
+                .withMobilePhone(wd.findElement(By.name("mobile")).getAttribute("value"))
+                .withWorkPhone(wd.findElement(By.name("work")).getAttribute("value"));
+        retunToHomePage();;
+        return contact;
+    }
+
+    public ContactData emailsFromEditForm(int id) {
+        initContactModification(id);
+        ContactData contact = new ContactData()
+                .withEMail(wd.findElement(By.name("email")).getAttribute("value"))
+                .withEMailTwo(wd.findElement(By.name("email2")).getAttribute("value"))
+                .withEMailThree(wd.findElement(By.name("email3")).getAttribute("value"));
+        retunToHomePage();;
+        return contact;
+    }
 }
