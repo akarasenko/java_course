@@ -25,6 +25,7 @@ public class ContactHelper extends HelperBase {
         if (creation) {
             new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
         }
+        attach(By.name("photo"), contactData.getPhoto());
     }
 
     public void submitContactCreation() {
