@@ -22,17 +22,18 @@ public class ContactCreationTests extends TestBase {
     public Iterator<Object[]> validContacts() throws IOException {
         File photo = new File("src/test/resources/photo.png");
 
-        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/contacts.json"));
-        String json = "";
-        String line = reader.readLine();
-        while (line != null)
-        {
-            json = json + line;
-            line = reader.readLine();
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/contacts.json"))) {
+            String json = "";
+            String line = reader.readLine();
+            while (line != null) {
+                json = json + line;
+                line = reader.readLine();
+            }
+            Gson gson = new Gson();
+            List<ContactData> contacts = gson.fromJson(json, new TypeToken<List<ContactData>>() {
+            }.getType());
+            return contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
         }
-        Gson gson = new Gson();
-        List<ContactData> contacts = gson.fromJson(json, new TypeToken<List<ContactData>>(){}.getType());
-        return contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
     }
 
     @Test(dataProvider = "validContacts")
@@ -53,8 +54,7 @@ public class ContactCreationTests extends TestBase {
     }
 
     @Test(enabled = false)
-    public void currentDirectory()
-    {
+    public void currentDirectory() {
         File currentDir = new File(".");
         System.out.println(currentDir.getAbsolutePath());
         // C:\Users\User\Documents\java_course\addressbook_web_tests\

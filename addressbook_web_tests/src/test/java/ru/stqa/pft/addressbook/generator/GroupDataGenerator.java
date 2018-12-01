@@ -27,11 +27,9 @@ public class GroupDataGenerator {
     public static void main(String[] args) throws IOException {
         GroupDataGenerator generator = new GroupDataGenerator();
         JCommander jCommander = new JCommander(generator);
-        try{
+        try {
             jCommander.parse(args);
-        }
-        catch (ParameterException e)
-        {
+        } catch (ParameterException e) {
             jCommander.usage();
             return;
         }
@@ -51,35 +49,31 @@ public class GroupDataGenerator {
                     .withName(String.format("group%s", i))
                     .withHeader(String.format("header%s", i))
                     .withFooter(String.format("footer%s", i)));
-        }if (format.equals("csv"))
-        {
+        }
+        if (format.equals("csv")) {
             saveAsCsv(groups, new File(file));
-        }
-        else if (format.equals("xml"))
-        {
+        } else if (format.equals("xml")) {
             saveAsXml(groups, new File(file));
-        }
-        else
-        {
+        } else {
             System.out.println("Unrecognized format");
         }
         return groups;
     }
 
     private void saveAsCsv(List<GroupData> groups, File file) throws IOException {
-        Writer writer = new FileWriter(file);
-        for (GroupData group : groups) {
-            writer.write(String.format("%s;%s;%s\n", group.getName(), group.getHeader(), group.getFooter()));
+        try (Writer writer = new FileWriter(file)) {
+            for (GroupData group : groups) {
+                writer.write(String.format("%s;%s;%s\n", group.getName(), group.getHeader(), group.getFooter()));
+            }
         }
-        writer.close();
     }
 
     private void saveAsXml(List<GroupData> groups, File file) throws IOException {
         XStream xstream = new XStream();
         xstream.processAnnotations(GroupData.class);
         String xml = xstream.toXML(groups);
-        Writer writer = new FileWriter(file);
-        writer.write(xml);
-        writer.close();
+        try (Writer writer = new FileWriter(file)) {
+            writer.write(xml);
+        }
     }
 }

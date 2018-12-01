@@ -27,11 +27,9 @@ public class ContactDataGenerator {
     public static void main(String[] args) throws IOException {
         ContactDataGenerator generator = new ContactDataGenerator();
         JCommander jCommander = new JCommander(generator);
-        try{
+        try {
             jCommander.parse(args);
-        }
-        catch (ParameterException e)
-        {
+        } catch (ParameterException e) {
             jCommander.usage();
             return;
         }
@@ -40,24 +38,18 @@ public class ContactDataGenerator {
 
     private void run() throws IOException {
         List<ContactData> contacts = generateContacts(count);
-        if (format.equals("csv"))
-        {
+        if (format.equals("csv")) {
             saveAsCsv(contacts, new File(file));
-        }
-        else if (format.equals("json"))
-        {
+        } else if (format.equals("json")) {
             saveAsJson(contacts, new File(file));
-        }
-        else
-        {
+        } else {
             System.out.println("Unrecognized format");
         }
     }
 
     private List<ContactData> generateContacts(int count) {
         List<ContactData> contacts = new ArrayList<ContactData>();
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             contacts.add(new ContactData().withFirstName(String.format("contact%s", i))
                     .withMobilePhone("123")
                     .withEMail("qwe@qwe.su"));
@@ -66,20 +58,19 @@ public class ContactDataGenerator {
     }
 
     private void saveAsCsv(List<ContactData> contacts, File file) throws IOException {
-        Writer writer = new FileWriter(file);
-        for (ContactData contact : contacts)
-        {
-            writer.write(String.format("%s;%s;%s\n", contact.getFirstName(), contact.getMobilePhone(), contact.getEMail()));
+        try (Writer writer = new FileWriter(file)) {
+
+            for (ContactData contact : contacts) {
+                writer.write(String.format("%s;%s;%s\n", contact.getFirstName(), contact.getMobilePhone(), contact.getEMail()));
+            }
         }
-        writer.close();
     }
 
     private void saveAsJson(List<ContactData> contacts, File file) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
         String json = gson.toJson(contacts);
-        Writer writer = new FileWriter(file);
-        writer.write(json);
-        writer.close();
-
+        try (Writer writer = new FileWriter(file)) {
+            writer.write(json);
+        }
     }
 }
