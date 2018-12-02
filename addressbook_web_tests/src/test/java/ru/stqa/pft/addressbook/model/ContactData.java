@@ -22,32 +22,27 @@ public class ContactData {
     @Column(name = "mobile")
     private String mobilePhone;
 
-    @Type(type = "text")
-    @Column(name = "home")
+    @Transient
     private String homePhone;
 
-    @Type(type = "text")
-    @Column(name = "work")
+    @Transient
     private String workPhone;
 
     @Transient
     private String allPhones;
 
-    @Type(type = "text")
-    @Column(name = "address")
+    @Transient
     private String address;
 
-    @Type(type = "text")
     @Expose
+    @Type(type = "text")
     @Column(name = "email")
     private String eMail;
 
-    @Type(type = "text")
-    @Column(name = "email2")
+    @Transient
     private String eMailTwo;
 
-    @Type(type = "text")
-    @Column(name = "email3")
+    @Transient
     private String eMailThree;
 
     @Transient
@@ -56,9 +51,31 @@ public class ContactData {
     @Transient
     private String group;
 
-    @Type(type = "text")
-    @Column(name = "photo")
+    @Transient
     private String photo;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ContactData that = (ContactData) o;
+        return id == that.id &&
+                Objects.equals(firstname, that.firstname) &&
+                Objects.equals(mobilePhone, that.mobilePhone) &&
+                Objects.equals(homePhone, that.homePhone) &&
+                Objects.equals(workPhone, that.workPhone) &&
+                Objects.equals(address, that.address) &&
+                Objects.equals(eMail, that.eMail) &&
+                Objects.equals(eMailTwo, that.eMailTwo) &&
+                Objects.equals(eMailThree, that.eMailThree) &&
+                Objects.equals(group, that.group) &&
+                Objects.equals(photo, that.photo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstname, mobilePhone, homePhone, workPhone, address, eMail, eMailTwo, eMailThree, group, photo);
+    }
 
     public int getId() {
         return id;
@@ -108,7 +125,11 @@ public class ContactData {
         return allEMails;
     }
 
-    public File getPhoto() { return new File(photo); }
+    public File getPhoto() {
+        if (photo == null) {
+            return null;
+        }
+        return new File(photo); }
 
     public ContactData withId(int id) {
         this.id = id;
@@ -175,16 +196,4 @@ public class ContactData {
         return this;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ContactData)) return false;
-        ContactData that = (ContactData) o;
-        return id == that.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

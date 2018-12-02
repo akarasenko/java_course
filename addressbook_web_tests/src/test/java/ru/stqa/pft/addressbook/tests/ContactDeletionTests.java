@@ -12,9 +12,8 @@ public class ContactDeletionTests extends TestBase {
 
     @BeforeTest
     public void unsurePreconditions() {
-        app.goTo().HomePage();
-
-        if (!app.contact().isThereAContact()) {
+        if (app.db().contacts().size() == 0) {
+            app.goTo().HomePage();
             app.contact().add(new ContactData()
                     .withFirstName("firstName")
                     .withMobilePhone("123456789"));
@@ -23,18 +22,20 @@ public class ContactDeletionTests extends TestBase {
 
     @Test
     public void testContactDeletion() {
-        Contacts before = app.contact().all();
+        Contacts before = app.db().contacts();
 
         ContactData contactToDelete = before.iterator().next();
 
+        app.goTo().HomePage();
         app.contact().delete(contactToDelete);
         app.goTo().HomePage();
 
         assertThat(app.contact().size(), equalTo(before.size() - 1));
 
-        Contacts after = app.contact().all();
+        Contacts after = app.db().contacts();
 
-        assertThat(after, equalTo(before.witout(contactToDelete)));;
+        assertThat(after, equalTo(before.witout(contactToDelete)));
+        ;
     }
 
 

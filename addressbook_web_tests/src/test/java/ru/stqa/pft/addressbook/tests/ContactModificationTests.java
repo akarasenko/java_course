@@ -12,9 +12,8 @@ public class ContactModificationTests extends TestBase {
 
     @BeforeTest
     public void unsurePreconditions() {
-        app.goTo().HomePage();
-
-        if (!app.contact().isThereAContact()) {
+        if (app.db().contacts().size() == 0) {
+            app.goTo().HomePage();
             app.contact().add(new ContactData()
                     .withFirstName("firstName")
                     .withMobilePhone("123456789"));
@@ -23,20 +22,24 @@ public class ContactModificationTests extends TestBase {
 
     @Test
     public void testContactModification() {
-        Contacts before = app.contact().all();
+        Contacts before = app.db().contacts();
+
+        app.goTo().HomePage();
 
         ContactData contactToModify = before.iterator().next();
 
         ContactData modifiedData = new ContactData()
                 .withId(contactToModify.getId())
-                .withFirstName("newFirstName");
+                .withFirstName("newFirstName")
+                .withMobilePhone("321")
+                .withEMail("new@qwe.su");
 
         app.contact().modify(contactToModify, modifiedData);
         app.goTo().HomePage();
 
         assertThat(app.contact().size(), equalTo(before.size()));
 
-        Contacts after = app.contact().all();
+        Contacts after = app.db().contacts();
 
         assertThat(after, equalTo(before.witout(contactToModify).withAdded(modifiedData)));
     }
