@@ -21,9 +21,10 @@ public class ApplicationManager {
     private NavigationHelper navigationHelper;
     private GroupHelper groupHelper;
     private ContactHelper contactHelper;
+    private DbHelper dbHelper;
     private String browser;
 
-    public ApplicationManager(String browser){
+    public ApplicationManager(String browser) {
         this.browser = browser;
         properties = new Properties();
     }
@@ -41,11 +42,12 @@ public class ApplicationManager {
         }
         // wd.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         wd.get(properties.getProperty("web.baseUrl"));
+        dbHelper = new DbHelper();
         groupHelper = new GroupHelper(wd);
         contactHelper = new ContactHelper(wd);
         navigationHelper = new NavigationHelper(wd);
         sessionHelper = new SessionHelper(wd);
-        sessionHelper.Login(properties.getProperty("web.login"),properties.getProperty("web.password"));
+        sessionHelper.Login(properties.getProperty("web.login"), properties.getProperty("web.password"));
     }
 
     public void stop() {
@@ -64,5 +66,7 @@ public class ApplicationManager {
     public ContactHelper contact() {
         return contactHelper;
     }
+
+    public DbHelper db() { return dbHelper; }
 }
 
