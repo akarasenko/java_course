@@ -1,34 +1,71 @@
 package ru.stqa.pft.addressbook.model;
 
 import com.google.gson.annotations.Expose;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import java.io.File;
 import java.util.Objects;
 
+@Entity
+@Table(name = "addressbook")
 public class ContactData {
+    @Id
+    @Column(name = "id")
     private int id = Integer.MAX_VALUE;
+
     @Expose
-    private String firstName;
+    private String firstname;
+
     @Expose
+    @Type(type = "text")
+    @Column(name = "mobile")
     private String mobilePhone;
+
+    @Type(type = "text")
+    @Column(name = "home")
     private String homePhone;
+
+    @Type(type = "text")
+    @Column(name = "work")
     private String workPhone;
+
+    @Transient
     private String allPhones;
+
+    @Type(type = "text")
+    @Column(name = "address")
     private String address;
+
+    @Type(type = "text")
     @Expose
+    @Column(name = "email")
     private String eMail;
+
+    @Type(type = "text")
+    @Column(name = "email2")
     private String eMailTwo;
+
+    @Type(type = "text")
+    @Column(name = "email3")
     private String eMailThree;
+
+    @Transient
     private String allEMails;
+
+    @Transient
     private String group;
-    private File photo;
+
+    @Type(type = "text")
+    @Column(name = "photo")
+    private String photo;
 
     public int getId() {
         return id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
     public String getMobilePhone() {
@@ -71,7 +108,7 @@ public class ContactData {
         return allEMails;
     }
 
-    public File getPhoto() { return photo; }
+    public File getPhoto() { return new File(photo); }
 
     public ContactData withId(int id) {
         this.id = id;
@@ -79,7 +116,7 @@ public class ContactData {
     }
 
     public ContactData withFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstname = firstName;
         return this;
     }
 
@@ -134,7 +171,7 @@ public class ContactData {
     }
 
     public ContactData withPhoto(File photo) {
-        this.photo = photo;
+        this.photo = photo.getPath();
         return this;
     }
 
