@@ -45,6 +45,8 @@ public class GroupModificationTest extends TestBase {
         assertThat(after, equalTo(
                 after.without(groupToModify)
                         .withAdded(modifiedData.withId(after.stream().mapToInt(o -> o.getId()).max().getAsInt()))));
+
+        verifyGroupListInUi();
     }
 
 

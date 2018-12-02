@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 
@@ -23,7 +24,10 @@ public class ContactHelper extends HelperBase {
         type(By.name("firstname"), contactData.getFirstname());
         type(By.name("mobile"), contactData.getMobilePhone());
         if (creation) {
-            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+            if (contactData.getGroups().size() > 0) {
+                Assert.assertTrue(contactData.getGroups().size() == 1);
+                new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups().iterator().next().getName());
+            }
         }
         type(By.name("email"), contactData.getEMail());
         attach(By.name("photo"), contactData.getPhoto());
@@ -63,7 +67,7 @@ public class ContactHelper extends HelperBase {
 
     public void add(ContactData contact) {
         initContactCreation();
-        fillContactForm(false, contact);
+        fillContactForm(true, contact);
         submitContactCreation();
         retunToHomePage();
         contactCache = null;

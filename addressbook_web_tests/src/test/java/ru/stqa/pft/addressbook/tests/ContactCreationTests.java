@@ -2,10 +2,13 @@ package ru.stqa.pft.addressbook.tests;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.Groups;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -36,18 +39,33 @@ public class ContactCreationTests extends TestBase {
         }
     }
 
+    @BeforeTest
+    public void ensurePreconditions() {
+        if (app.db().groups().size() == 0) {
+            app.goTo().GroupPage();
+            app.group().add(new GroupData()
+                    .withName("testgroup")
+                    .withHeader("testheader")
+                    .withFooter("testfooter"));
+        }
+    }
+
     @Test(dataProvider = "validContacts")
     public void testContactCreation(ContactData contact) {
         app.goTo().HomePage();
 
+        Groups groups = app.db().groups();
+
         Contacts before = app.db().contacts();
+
+        contact.inGroup(groups.iterator().next());
 
         app.contact().add(contact);
         app.goTo().HomePage();
 
         assertThat(app.contact().size(), equalTo(before.size() + 1));
 
-        Contacts after =  app.db().contacts();
+        Contacts after = app.db().contacts();
 
         assertThat(after, equalTo(
                 before.withAdded(contact.withId(after.stream().mapToInt(o -> o.getId()).max().getAsInt()))));

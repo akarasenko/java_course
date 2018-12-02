@@ -7,7 +7,6 @@ import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +46,7 @@ public class GroupCreationTests extends TestBase {
 
         assertThat(after, equalTo(
                 after.withAdded(group.withId(after.stream().mapToInt(o -> o.getId()).max().getAsInt()))));
+
+        verifyGroupListInUi();
     }
-
-
 }
