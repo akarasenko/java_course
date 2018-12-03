@@ -42,4 +42,8 @@ public class Groups extends ForwardingSet<GroupData> {
         groups.remove(group);
         return groups;
     }
+
+    public int size(){
+        return this.delegate.size();
+    }
 }
