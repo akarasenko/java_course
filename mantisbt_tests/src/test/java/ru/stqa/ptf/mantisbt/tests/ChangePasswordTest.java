@@ -22,7 +22,7 @@ public class ChangePasswordTest extends TestBase{
     @Test
     public void testChangePassword() throws IOException {
         List<User> users = app.db().getUsers();
-        // в БД два юзера, первый - администратор, второму - меняем пароль
+        // в БД минимум два юзера, первый - администратор, второму - меняем пароль
         User user = users.get(1);
 
         String newPassword = "123456q";
