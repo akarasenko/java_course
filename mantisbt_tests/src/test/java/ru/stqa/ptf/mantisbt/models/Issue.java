@@ -1,5 +1,7 @@
 package ru.stqa.ptf.mantisbt.models;
 
+import biz.futureware.mantis.rpc.soap.client.IssueData;
+
 public class Issue {
 
     private int id;
@@ -7,6 +9,17 @@ public class Issue {
     private String description;
     private Project project;
     private String category;
+    private String status;
+
+    public Issue(){}
+
+    public Issue(IssueData issueData){
+        id = issueData.getId().intValue();
+        summary = issueData.getSummary();
+        description = issueData.getDescription();
+        category = issueData.getCategory();
+        status = issueData.getStatus().toString();
+    }
 
     public int getId() {
         return id;
@@ -50,6 +63,15 @@ public class Issue {
 
     public Issue withCategory(String category) {
         this.category = category;
+        return this;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Issue withStatus(String status) {
+        this.status = status;
         return this;
     }
 }
