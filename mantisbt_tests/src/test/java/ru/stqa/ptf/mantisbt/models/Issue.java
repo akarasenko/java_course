@@ -18,7 +18,7 @@ public class Issue {
         summary = issueData.getSummary();
         description = issueData.getDescription();
         category = issueData.getCategory();
-        status = issueData.getStatus().toString();
+        status = issueData.getStatus().getName();
     }
 
     public int getId() {

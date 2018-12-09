@@ -30,15 +30,15 @@ public class TestBase {
     }
 
     public void skipIfNotFixed(int issueId) throws RemoteException, ServiceException, MalformedURLException {
-        if (isIssueOpen(issueId)) {
+        if (!isIssueClose(issueId)) {
             throw new SkipException("Ignored because of issue " + issueId);
         }
     }
 
-    private boolean isIssueOpen(int issueId) throws RemoteException, ServiceException, MalformedURLException {
-         Issue issue = new Issue(app.soap().getIssueWithId(issueId));
-         String status = issue.getStatus();
-                 return status == "closed";
+    private boolean isIssueClose(int issueId) throws RemoteException, ServiceException, MalformedURLException {
+        Issue issue = new Issue(app.soap().getIssueWithId(issueId));
+        String status = issue.getStatus();
+        return status.equals("closed");
     }
 }
 

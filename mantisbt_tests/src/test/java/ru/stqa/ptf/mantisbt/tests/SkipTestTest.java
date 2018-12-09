@@ -10,7 +10,8 @@ public class SkipTestTest extends TestBase {
 
     @Test
     public void testSkipTests() throws RemoteException, ServiceException, MalformedURLException {
-        int issueId = 2;
+        // считаем, что выполенение теста зависит от
+        int issueId = 1;
         skipIfNotFixed(issueId);
         System.out.println("Test was run");
     }
