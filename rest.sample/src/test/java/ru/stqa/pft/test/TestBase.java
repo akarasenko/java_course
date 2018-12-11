@@ -23,34 +23,37 @@ public class TestBase {
 
     private boolean isIssueClosed(int issueId) throws IOException {
         Issue issueForCheck = getIssueById(issueId);
-        return issueForCheck.getStatus().equals("closed");
+        return issueForCheck.getStateName().equals("Closed");
     }
 
-    private Set<Issue> getIssues() throws IOException {
-        String json = getExecutor().execute(Request.Get("http://demo.bugify.com/api/issues.json")).returnContent().toString();
+    private Issue getIssueById(int id) throws IOException {
+        String json = getExecutor().execute(Request.Get(String.format("http://bugify.stqa.ru/api/issues/%s.json", id)))
+                .returnContent().toString();
+        JsonElement parsed = new JsonParser().parse(json);
+        JsonElement issue = parsed.getAsJsonObject().get("issues");
+        return ((Set<Issue>) (new Gson().fromJson(issue, new TypeToken<Set<Issue>>() {
+        }.getType()))).iterator().next();
+    }
+
+    private Executor getExecutor() {
+        return Executor.newInstance().auth("288f44776e7bec4bf44fdfeb1e646490", "");
+    }
+
+    /* private Set<Issue> getIssues() throws IOException {
+        String json = getExecutor().execute(Request.Get("http://bugify.stqa.ru/api/issues.json")).returnContent().toString();
         JsonElement parsed = new JsonParser().parse(json);
         JsonElement issues = parsed.getAsJsonObject().get("issues");
         return new Gson().fromJson(issues, new TypeToken<Set<Issue>>(){}.getType());
     }
+    */
 
-    public int createIssue(Issue nissue) throws IOException {
-        String json = getExecutor().execute(Request.Get("http://demo.bugify.com/api/issues.json")
-                .bodyForm(new BasicNameValuePair("subject", nissue.getSubject()))
-                .bodyForm(new BasicNameValuePair("description", nissue.getDescription())))
+     /*   private int createIssue(Issue issue) throws IOException {
+        String json = getExecutor().execute(Request.Post("http://demo.bugify.stqa.ru/api/issues.json")
+                .bodyForm(new BasicNameValuePair("subject", issue.getSubject()))
+                .bodyForm(new BasicNameValuePair("description", issue.getDescription())))
                 .returnContent().toString();
         JsonElement parsed = new JsonParser().parse(json);
         return parsed.getAsJsonObject().get("issue_id").getAsInt();
     }
-
-    private Issue getIssueById(int id) throws IOException {
-        String json = getExecutor().execute(Request.Get("http://demo.bugify.com/api/issues.json")
-                .bodyForm(new BasicNameValuePair("issue_id", String.valueOf(id))))
-                .returnContent().toString();
-        JsonElement issue = new JsonParser().parse(json);
-        return new Gson().fromJson(issue, new TypeToken<Set<Issue>>(){}.getType());
-    }
-
-    private Executor getExecutor() {
-        return Executor.newInstance().auth("288f44776e7bec4bf44fdfeb1e646490","");
-    }
+ */
 }
