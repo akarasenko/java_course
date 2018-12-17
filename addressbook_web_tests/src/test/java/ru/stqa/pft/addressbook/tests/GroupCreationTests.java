@@ -33,7 +33,9 @@ public class GroupCreationTests extends TestBase {
     }
 
     @Test(dataProvider = "validGroups")
-    public void testGroupCreation(GroupData group) throws Exception {
+    public void testGroupCreation(GroupData groupToAdd) throws Exception {
+        GroupData group = new GroupData().withName("new group").withHeader("header").withFooter("footer");
+
         app.goTo().GroupPage();
 
         Groups before = app.db().groups();
